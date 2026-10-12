@@ -1,0 +1,80 @@
+/* ==========================================================================
+   RUSH REPUBLIC — RESPONSIVE RULES
+   ========================================================================== */
+
+/* ---------- Tablet (<=1024px) ---------- */
+@media (max-width:1024px){
+  .create-layout{ grid-template-columns:1fr; }
+  .chart-grid{ grid-template-columns:1fr; }
+  .quick-actions{ grid-template-columns:repeat(2,1fr); }
+  .stats-grid{ grid-template-columns:repeat(2,1fr); }
+  .analytics-stats{ grid-template-columns:repeat(3,1fr); }
+  .analytics-stat:nth-child(3){ border-right:none; }
+  .stat-card:nth-child(2){ border-right:none; }
+
+  .app-shell{ grid-template-columns:1fr; }
+  .sidebar{
+    position:fixed; left:0; top:0; width:268px;
+    transform:translateX(-100%);
+    transition:transform .25s var(--ease);
+  }
+  .sidebar.open{ transform:translateX(0); }
+  .sidebar-overlay.open{ display:block; }
+  .hamburger-btn{ display:flex; align-items:center; justify-content:center; }
+}
+
+/* ---------- Mobile (<=680px) ---------- */
+@media (max-width:680px){
+  .login-screen{ grid-template-columns:1fr; }
+  .login-left{ padding:48px 32px; min-height:280px; }
+  .login-brand{ font-size:44px; }
+  .login-logo{ width:64px; height:64px; margin-bottom:24px; }
+  .login-right{ padding:32px; }
+
+  .content-area{ padding:20px; }
+  .top-header{ padding:0 16px; gap:12px; }
+  .page-title{ font-size:17px; }
+  .account-selector-btn span{ max-width:90px; overflow:hidden; text-overflow:ellipsis; display:inline-block; white-space:nowrap; }
+
+  .stats-grid{ grid-template-columns:1fr 1fr; }
+  .stat-card{ border-right:1px solid var(--black); border-bottom:1px solid var(--black); }
+  .stat-card:nth-child(2n){ border-right:none; }
+  .stat-value{ font-size:32px; }
+
+  .quick-actions{ grid-template-columns:1fr 1fr; }
+
+  .analytics-stats{ grid-template-columns:1fr 1fr; }
+  .analytics-stat{ border-right:1px solid var(--black); border-bottom:1px solid var(--black); }
+  .analytics-stat:nth-child(2n){ border-right:none; }
+
+  .view-header{ flex-direction:column; align-items:flex-start; }
+  .view-header-actions{ width:100%; }
+  .view-header-actions .btn{ flex:1; }
+
+  /* content rows -> cards */
+  .content-row{
+    grid-template-columns:56px 1fr;
+    grid-template-areas:"thumb info" "actions actions";
+  }
+  .content-thumb{ width:56px; height:56px; grid-area:thumb; }
+  .content-info{ grid-area:info; }
+  .content-actions{ grid-area:actions; justify-content:flex-start; margin-top:10px; }
+  .content-caption{ max-width:100%; white-space:normal; }
+
+  .calendar-grid{ grid-template-columns:1fr; }
+  .calendar-weekday{ display:none; }
+  .calendar-cell{ min-height:auto; border-left:1px solid var(--black); }
+  .calendar-cell.outside{ display:none; }
+
+  .toolbar{ flex-direction:column; align-items:stretch; }
+  .search-box{ max-width:none; }
+
+  .form-row{ grid-template-columns:1fr; }
+
+  .donut-wrap{ flex-direction:column; align-items:flex-start; }
+
+  .modal-box{ padding:26px; }
+
+  .toast-container{ left:16px; right:16px; bottom:16px; }
+  .toast{ min-width:0; width:100%; }
+}
