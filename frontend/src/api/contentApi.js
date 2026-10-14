@@ -27,6 +27,7 @@ export const contentApi = {
 
   update: (id, patch) => http.patch(`/content/${id}/`, patch),
   cancel: (id) => http.post(`/content/${id}/cancel/`),
+  remove: (id) => http.delete(`/content/${id}/`),
   retry: (id) => http.post(`/content/${id}/retry/`),
 
   scheduled: () => contentApi.list({ status: "SCHEDULED" }),

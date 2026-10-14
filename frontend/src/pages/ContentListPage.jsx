@@ -112,6 +112,25 @@ export default function ContentListPage({ title, subtitle, status, emptyTitle, e
     );
   };
 
+  const deleteModal = (item) => {
+    openModal(
+      <>
+        <div className="modal-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M15 9l-6 6M9 9l6 6" /></svg></div>
+        <h3>Delete {item.type === "REEL" ? "Reel" : "Post"}?</h3>
+        <p>This permanently removes this content and its uploaded media. This action cannot be undone.</p>
+        <div className="modal-actions">
+          <button className="btn btn-secondary" onClick={closeModal}>Keep</button>
+          <button
+            className="btn btn-danger"
+            onClick={() => { closeModal(); runAction(() => contentApi.remove(item.id), "Content deleted."); }}
+          >
+            Delete
+          </button>
+        </div>
+      </>
+    );
+  };
+
   const rowActions = (item) => {
     if (kind === "scheduled") {
       return (
@@ -140,6 +159,7 @@ export default function ContentListPage({ title, subtitle, status, emptyTitle, e
           Retry
         </button>
         <button className="btn btn-ghost btn-sm" onClick={() => navigate(item.type === "REEL" ? "/app/create-reel" : "/app/create-post")}>Edit</button>
+        <button className="btn btn-danger btn-sm" onClick={() => deleteModal(item)}>Delete</button>
       </>
     );
   };

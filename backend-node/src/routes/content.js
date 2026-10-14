@@ -180,6 +180,26 @@ router.patch("/content/:pk(\\d+)/", upload.none(), wrap(async (req, res) => {
   res.json(contentOut(await loadOwned(c.id, req.user.id), req));
 }));
 
+// ---- DELETE /api/content/:id/  (not while PROCESSING; published items are kept)
+router.delete("/content/:pk(\\d+)/", wrap(async (req, res) => {
+  const c = await loadOwned(req.params.pk, req.user.id);
+  const r = await query(
+    "DELETE FROM scheduler_scheduledcontent WHERE id = ? AND status IN ('FAILED','SCHEDULED','CANCELLED','DRAFT')",
+    [c.id]
+  );
+  if (r.affectedRows !== 1) {
+    throw new ApiError(409, { detail: `Cannot delete content with status ${c.status}.` });
+  }
+  // Drop the uploaded file too, unless another item still uses it.
+  const used = await query("SELECT 1 FROM scheduler_scheduledcontent WHERE media_id = ? LIMIT 1", [c.media_id]);
+  if (!used.length) {
+    await query("DELETE FROM scheduler_mediafile WHERE id = ?", [c.media_id]);
+    const abs = path.resolve(env.mediaRoot, c.m_file);
+    if (abs.startsWith(env.mediaRoot + path.sep)) await fs.promises.unlink(abs).catch(() => {});
+  }
+  res.status(204).end();
+}));
+
 // ---- POST /api/content/:id/cancel/
 router.post("/content/:pk(\\d+)/cancel/", wrap(async (req, res) => {
   const c = await loadOwned(req.params.pk, req.user.id);

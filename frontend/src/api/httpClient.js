@@ -103,6 +103,7 @@ export async function request(path, options = {}) {
 export const http = {
   get: (path) => request(path, { method: "GET" }),
   post: (path, body) => request(path, { method: "POST", body }),
+  delete: (path) => request(path, { method: "DELETE" }),
   patch: (path, body) => request(path, { method: "PATCH", body }),
   postForm: (path, formData) => request(path, { method: "POST", body: formData, isFormData: true }),
   patchForm: (path, formData) => request(path, { method: "PATCH", body: formData, isFormData: true }),
