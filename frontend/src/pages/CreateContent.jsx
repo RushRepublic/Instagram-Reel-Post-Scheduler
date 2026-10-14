@@ -4,7 +4,7 @@ import { useAppData } from "../context/AppDataContext";
 import { useModal } from "../context/ModalContext";
 import { useToast } from "../context/ToastContext";
 import { ApiError } from "../api/httpClient";
-import { fileSize, formatDate, formatTime } from "../utils/format";
+import { fileSize, formatDate, formatTime, zonedParts } from "../utils/format";
 
 export default function CreateContent({ type }) {
   const isReel = type === "REEL";
@@ -145,8 +145,8 @@ export default function CreateContent({ type }) {
             : `Your Instagram ${record.content_type.toLowerCase()} has been scheduled successfully.`}
         </p>
         <div className="modal-detail-row"><span className="label">Account</span><span className="value">@{record.instagram_account.username}</span></div>
-        <div className="modal-detail-row"><span className="label">Date</span><span className="value">{formatDate(record.scheduled_at.slice(0, 10))}</span></div>
-        {!wasPublishNow && <div className="modal-detail-row"><span className="label">Time</span><span className="value">{formatTime(record.scheduled_at.slice(11, 16))}</span></div>}
+        <div className="modal-detail-row"><span className="label">Date</span><span className="value">{formatDate(zonedParts(record.scheduled_at, record.timezone).date)}</span></div>
+        {!wasPublishNow && <div className="modal-detail-row"><span className="label">Time</span><span className="value">{formatTime(zonedParts(record.scheduled_at, record.timezone).time)}</span></div>}
         <div className="modal-actions">
           <button className="btn btn-secondary" onClick={() => { closeModal(); navigate(wasPublishNow ? "/app/published" : "/app/scheduled"); }}>
             {wasPublishNow ? "View Published" : "View Schedule"}

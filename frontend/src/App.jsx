@@ -1,8 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { useAuth } from "./context/AuthContext";
 import { AppDataProvider } from "./context/AppDataContext";
 import Layout from "./components/Layout";
-import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import CreatePost from "./pages/CreatePost";
 import CreateReel from "./pages/CreateReel";
@@ -14,29 +12,15 @@ import Accounts from "./pages/Accounts";
 import Analytics from "./pages/Analytics";
 import Settings from "./pages/Settings";
 
-function ProtectedRoute({ children }) {
-  const { isLoggedIn, checkingSession } = useAuth();
-  if (checkingSession) return null;
-  return isLoggedIn ? children : <Navigate to="/login" replace />;
-}
-
 export default function App() {
-  const { isLoggedIn, checkingSession } = useAuth();
-
-  if (checkingSession) return null;
-
   return (
     <Routes>
-      <Route path="/login" element={isLoggedIn ? <Navigate to="/app/dashboard" replace /> : <Login />} />
-
       <Route
         path="/app"
         element={
-          <ProtectedRoute>
-            <AppDataProvider>
-              <Layout />
-            </AppDataProvider>
-          </ProtectedRoute>
+          <AppDataProvider>
+            <Layout />
+          </AppDataProvider>
         }
       >
         <Route path="dashboard" element={<Dashboard />} />
@@ -52,7 +36,7 @@ export default function App() {
         <Route index element={<Navigate to="dashboard" replace />} />
       </Route>
 
-      <Route path="*" element={<Navigate to={isLoggedIn ? "/app/dashboard" : "/login"} replace />} />
+      <Route path="*" element={<Navigate to="/app/dashboard" replace />} />
     </Routes>
   );
 }

@@ -1,5 +1,4 @@
 import { NavLink } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
 
 const NAV_ITEMS = [
   { group: null, to: "/app/dashboard", label: "Dashboard", icon: <path d="M3 12l9-9 9 9M5 10v10h14V10" /> },
@@ -15,8 +14,6 @@ const NAV_ITEMS = [
 ];
 
 export default function Sidebar({ open, onNavigate }) {
-  const { logout } = useAuth();
-
   let lastGroup = undefined;
 
   return (
@@ -54,7 +51,6 @@ export default function Sidebar({ open, onNavigate }) {
             <div className="sidebar-user-role">Rush Republic</div>
           </div>
         </div>
-        <button className="sidebar-logout" onClick={logout}>Logout</button>
       </div>
     </aside>
   );

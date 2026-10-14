@@ -2,6 +2,26 @@
    RUSH REPUBLIC — FORMATTING HELPERS
    ========================================================================== */
 
+/**
+ * The API returns scheduled_at in UTC ("...Z"). Show it as wall-clock date/time
+ * in the item's own IANA timezone (what the user picked), not as raw UTC.
+ */
+export function zonedParts(iso, timeZone) {
+  if (!iso) return { date: null, time: null };
+  const d = new Date(iso);
+  let parts;
+  try {
+    parts = new Intl.DateTimeFormat("en-CA", {
+      timeZone: timeZone || "Asia/Kolkata", year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+    }).formatToParts(d);
+  } catch {
+    return { date: iso.slice(0, 10), time: iso.slice(11, 16) };
+  }
+  const p = Object.fromEntries(parts.map((x) => [x.type, x.value]));
+  return { date: `${p.year}-${p.month}-${p.day}`, time: `${p.hour}:${p.minute}` };
+}
+
 export function formatDate(iso) {
   if (!iso) return "";
   const d = new Date(iso + "T00:00:00");

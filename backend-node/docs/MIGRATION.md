@@ -53,6 +53,9 @@ The original Django backend is still in `backend/` as the rollback.
 
 Known response differences (intentional/minor): `405` for wrong HTTP verbs becomes `404`; Django `/admin/` is gone; the OAuth `state` is a signed JWT instead of a Django-signing blob (only lives 10 min).
 
+## 3b. No sign-in mode
+The login page was removed from the frontend. `AUTH_REQUIRED=false` (backend) makes every request act as `DEFAULT_USER_EMAIL` (fallback: first active user), so the tool opens straight on the dashboard. **Anyone who can reach the site has full control** — on Hostinger protect it (hPanel → Password Protect Directories) or keep the URL private. `AUTH_REQUIRED=true` restores token auth (the login/refresh endpoints are still present, but the frontend no longer has a sign-in screen).
+
 ## 4. Scheduler (replaces Celery) — and the Hostinger limit
 
 Hostinger's docs say Node.js apps on Web/Cloud plans run **on demand** and are stopped after a period without traffic ([docs](https://docs.hostinger.com/node.js/overview)); cron jobs are creatable from hPanel on Web/Cloud plans. So a persistent worker is **not** guaranteed. Design:

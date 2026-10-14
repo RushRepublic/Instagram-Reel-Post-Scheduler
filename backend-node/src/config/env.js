@@ -11,6 +11,9 @@ if (!secret) throw new Error("JWT_SECRET (or DJANGO_SECRET_KEY) must be set in p
 
 module.exports = {
   isProd,
+  // false = no sign-in: every request acts as defaultUserEmail (or the first active user).
+  authRequired: bool(e.AUTH_REQUIRED, true),
+  defaultUserEmail: e.DEFAULT_USER_EMAIL || "admin@rushrepublic.com",
   port: parseInt(e.PORT || "3000", 10),
   secretKey: secret,
   fieldEncryptionKey: e.FIELD_ENCRYPTION_KEY || "",
